@@ -1,1 +1,1 @@
-/usr/bin/c++ "CMakeFiles/out.dir/parte-2.cpp.o" CMakeFiles/out.dir/grafo.cpp.o -o out 
+/usr/bin/c++ "CMakeFiles/out.dir/parte-2.cpp.o" CMakeFiles/out.dir/grafo.cpp.o CMakeFiles/out.dir/abierta.cpp.o CMakeFiles/out.dir/cerrada.cpp.o -o out 

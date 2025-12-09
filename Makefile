@@ -129,6 +129,54 @@ out/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/build
 .PHONY : out/fast
 
+abierta.o: abierta.cpp.o
+.PHONY : abierta.o
+
+# target to build an object file
+abierta.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/abierta.cpp.o
+.PHONY : abierta.cpp.o
+
+abierta.i: abierta.cpp.i
+.PHONY : abierta.i
+
+# target to preprocess a source file
+abierta.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/abierta.cpp.i
+.PHONY : abierta.cpp.i
+
+abierta.s: abierta.cpp.s
+.PHONY : abierta.s
+
+# target to generate assembly for a file
+abierta.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/abierta.cpp.s
+.PHONY : abierta.cpp.s
+
+cerrada.o: cerrada.cpp.o
+.PHONY : cerrada.o
+
+# target to build an object file
+cerrada.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/cerrada.cpp.o
+.PHONY : cerrada.cpp.o
+
+cerrada.i: cerrada.cpp.i
+.PHONY : cerrada.i
+
+# target to preprocess a source file
+cerrada.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/cerrada.cpp.i
+.PHONY : cerrada.cpp.i
+
+cerrada.s: cerrada.cpp.s
+.PHONY : cerrada.s
+
+# target to generate assembly for a file
+cerrada.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/cerrada.cpp.s
+.PHONY : cerrada.cpp.s
+
 grafo.o: grafo.cpp.o
 .PHONY : grafo.o
 
@@ -186,6 +234,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... out"
+	@echo "... abierta.o"
+	@echo "... abierta.i"
+	@echo "... abierta.s"
+	@echo "... cerrada.o"
+	@echo "... cerrada.i"
+	@echo "... cerrada.s"
 	@echo "... grafo.o"
 	@echo "... grafo.i"
 	@echo "... grafo.s"

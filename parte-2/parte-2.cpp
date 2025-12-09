@@ -1,6 +1,8 @@
-#include <fstream>  // Para ofstream
 #include <iostream> // Para cout
 #include "grafo.hpp"
+#include "abierta.hpp"
+#include "cerrada.hpp"
+#include "algoritmo.hpp"
 using namespace std;
 
 int main(int argc, char *argv[]){
@@ -24,5 +26,25 @@ int main(int argc, char *argv[]){
     grafo.leer_fichero_coordenadas(nombre_mapa);
     grafo.leer_fichero_grafico(nombre_mapa);
 
+    ListaAbierta abierta;
+    Nodo nodo;
+    nodo.id = 0;
+    nodo.g = 0;
+    nodo.h = 0;
+    nodo.id_padre = NULL;
+    abierta.insertar_nodo(4, 4, 0, nodo);
+    abierta.imprimir_nodos();
+    abierta.insertar_nodo(4, 4, 0, nodo);
+    abierta.insertar_nodo(2, 2, 0, nodo);
+    abierta.imprimir_nodos();
+    abierta.insertar_nodo(4, 4, 0, nodo);
+    abierta.insertar_nodo(2, 2, 0, nodo);
+    abierta.insertar_nodo(3, 3, 0, nodo);
+    abierta.imprimir_nodos();
+    abierta.insertar_nodo(4, 4, 0, nodo);
+    abierta.insertar_nodo(2, 2, 0, nodo);
+    abierta.insertar_nodo(3, 3, 0, nodo);
+    abierta.insertar_nodo(1, 1, 0, nodo);
+    abierta.imprimir_nodos();
     return 0;
 }

@@ -2,15 +2,10 @@
 #define ABIERTA_HPP
 
 #include <iostream>
-#include <vector>
 #include <string>
-#include <fstream>
-#include <sstream> // Necesario para la lectura de coordenadas
+#include <set>
 
-#include "grafo.hpp"
-// Usar std:: para evitar la contaminación global del namespace
-// o añadir 'using namespace std;' si lo prefieres.
-// Aquí usamos 'std::' para mayor seguridad.
+using namespace std;
 
 struct Nodo
 {
@@ -21,26 +16,36 @@ struct Nodo
     //    # h(n): estimación del costo restante desde nodo actual n hasta nodo objetivo
     int h;
     //    # f(n): costo estimado del camino pasando por n
-    int f = g + h;
+    int f;
 
-    int id_padre;
+    struct Nodo* id_padre;
+
 };
 
+class Comparacion {
+    public:
+        Comparacion ();
+        bool operator() (const Nodo& nodo_max, const Nodo& nodo_nuevo) const;
+};
 
 
 // 2. DECLARACIÓN DE LA CLASE GRAFO
 class ListaAbierta
 {
     public:
-        std::vector<Nodo> lista;
+        //priority_queue<Nodo, vector<Nodo>, Comparacion> lista;
+        set<Nodo, Comparacion> lista;
 
 
         // Constructor por defecto
         ListaAbierta();
 
-        void insertar_nodo();
+        //Nodo buscar_nodo(int id);
+        void insertar_nodo(Nodo nodo);
         Nodo pop();
-        void lista_prioridad(int g, int h);
+        void imprimir_nodos();
+        void buscar_nodo(Nodo nodo);
+        //void lista_prioridad(int g, int h);
 };
 
 #endif // ABIERTA_HPP

@@ -1,4 +1,8 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/out.dir/abierta.cpp.o"
+  "CMakeFiles/out.dir/abierta.cpp.o.d"
+  "CMakeFiles/out.dir/cerrada.cpp.o"
+  "CMakeFiles/out.dir/cerrada.cpp.o.d"
   "CMakeFiles/out.dir/grafo.cpp.o"
   "CMakeFiles/out.dir/grafo.cpp.o.d"
   "CMakeFiles/out.dir/parte-2.cpp.o"

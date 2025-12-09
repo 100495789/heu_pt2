@@ -16,7 +16,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Si solo tienes el main.cpp en la raíz:
 set(SOURCE_FILES 
     parte-2.cpp
-    grafo.cpp)
+    grafo.cpp
+    abierta.cpp
+    cerrada.cpp)
 
 # Si tu código fuera modular (e.g., Grafo.cpp y main.cpp):
 # set(SOURCE_FILES 
