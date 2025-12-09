@@ -18,14 +18,18 @@ struct Nodo
     //    # f(n): costo estimado del camino pasando por n
     int f;
 
-    struct Nodo* id_padre;
+    int id_padre;
 
 };
 
 class Comparacion {
     public:
         Comparacion ();
+
+        using is_transparent = void;
         bool operator() (const Nodo& nodo_max, const Nodo& nodo_nuevo) const;
+        bool operator() (const int& id_a, const Nodo& nodo_b) const;
+        bool operator() (const Nodo& nodo_a, const int& id_b) const;
 };
 
 
@@ -33,6 +37,7 @@ class Comparacion {
 class ListaAbierta
 {
     public:
+        
         //priority_queue<Nodo, vector<Nodo>, Comparacion> lista;
         set<Nodo, Comparacion> lista;
 
@@ -44,7 +49,7 @@ class ListaAbierta
         void insertar_nodo(Nodo nodo);
         Nodo pop();
         void imprimir_nodos();
-        void buscar_nodo(Nodo nodo);
+        std::set<Nodo, Comparacion>::iterator buscar_nodo(int id);
         //void lista_prioridad(int g, int h);
 };
 

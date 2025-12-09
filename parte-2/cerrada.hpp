@@ -1,3 +1,6 @@
+#ifndef CERRADA_HPP
+#define CERRADA_HPP
+
 #include <vector>
 #include <string>
 #include <unordered_map>
@@ -8,7 +11,11 @@ using namespace std;
 
 class ListaCerrada {
     public:
-        unordered_map<int, int> lista; //id & f
-        void añadir_nodo(Nodo nodoN);
+        ListaCerrada();
+        vector<Nodo> lista; //id & f
+        void añadir_nodo(Nodo nodo);
+        vector<Nodo>::iterator buscar_nodo_en_vector(int id_a_buscar);
+
 };
 
+#endif // ABIERTA_HPP

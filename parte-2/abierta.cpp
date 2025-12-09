@@ -10,10 +10,19 @@ Comparacion::Comparacion() = default;
 
 
 bool Comparacion::operator() (const Nodo& nodo_max, const Nodo& nodo_nuevo) const{
-    return nodo_max.f < nodo_nuevo.f;
+    if (nodo_max.f != nodo_nuevo.f) {
+            return nodo_max.f < nodo_nuevo.f;
+        }
+        return nodo_max.id < nodo_nuevo.id;
 }
 
+bool Comparacion::operator() (const int& id_a, const Nodo& nodo_b) const {
+        return id_a < nodo_b.id;
+    }
 
+bool Comparacion::operator() (const Nodo& nodo_a, const int& id_b) const {
+    return nodo_a.id < id_b;
+}
 
 ListaAbierta::ListaAbierta() = default;
 
@@ -95,19 +104,10 @@ void ListaAbierta::imprimir_nodos(){
     cout << endl;
 }
 
-void ListaAbierta::buscar_nodo(Nodo nodo){
+std::set<Nodo, Comparacion>::iterator ListaAbierta::buscar_nodo(int id){
     // falta cosas
-    for (Nodo it: lista){
-        if (nodo.id == it.id && nodo.f < it.f ){
-            it.f = nodo.f;
-            it.g = nodo.g;
-            it.h = nodo.h;
-            it.id_padre = nodo.id_padre;
-        }
-        else {
-            //insertar_nodo()
-        }
-    }
+    auto nodo = lista.find(id);
+    return nodo;
 }
 
 /*void ListaAbierta::lista_prioridad(int g, int h){

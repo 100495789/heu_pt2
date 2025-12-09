@@ -18,7 +18,8 @@ set(SOURCE_FILES
     parte-2.cpp
     grafo.cpp
     abierta.cpp
-    cerrada.cpp)
+    cerrada.cpp
+    algoritmo.cpp)
 
 # Si tu código fuera modular (e.g., Grafo.cpp y main.cpp):
 # set(SOURCE_FILES 
