@@ -3,9 +3,11 @@
 
 #include <iostream>
 #include <vector>
+#include <utility>
 #include <string>
 #include <fstream>
 #include <sstream> // Necesario para la lectura de coordenadas
+using namespace std;
 
 // Usar std:: para evitar la contaminación global del namespace
 // o añadir 'using namespace std;' si lo prefieres.
@@ -21,7 +23,7 @@ struct Vertice
 
 // 2. ESTRUCTURA ARCO
 struct Arco
-{
+{   
     int idDestino;
     int coste;
 };
@@ -45,7 +47,7 @@ class Grafo
         void añadir_vertices (int id, int longi, int latitud);
         void leer_fichero_grafico(const std::string nombre_mapa);
         void añadir_arcos(int v_origen, int v_destino, int coste);
-
+        pair<int, int> buscar_vertice(int id);
         // Funciones de Impresión y Utilidad
         void mostrar_vertices();
         void imprimir_lista();
