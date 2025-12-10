@@ -1,3 +1,0 @@
-/home/iciar/Escritorio/Uni/4/heu/G5_entrega2/heu_pt2/CMakeFiles/out.dir
-/home/iciar/Escritorio/Uni/4/heu/G5_entrega2/heu_pt2/CMakeFiles/edit_cache.dir
-/home/iciar/Escritorio/Uni/4/heu/G5_entrega2/heu_pt2/CMakeFiles/rebuild_cache.dir
