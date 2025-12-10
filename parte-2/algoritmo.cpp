@@ -79,8 +79,16 @@ void A_star::a_star(int v_origen, int v_destino, string mapa_path, string output
     grafo.leer_fichero_coordenadas(mapa_path);
     grafo.leer_fichero_grafico(mapa_path);
     // en grafo.vertices y grafo.lista_adjacencia tenemos el grafo
+    pair<int, int> atributosFinal = grafo.buscar_vertice(v_destino);
+    longitud_destino = atributosFinal.first;
+    latitud_destino = atributosFinal.second;
+    id_destino = v_destino;
 
-    Nodo estadoInicial = crear_nodo(v_origen, 0, funcion_heuristica(), -1);
+
+    pair<int, int> atributosInicial = grafo.buscar_vertice(v_origen);
+    
+    float h_inicial = funcion_heuristica(atributosInicial.first, atributosInicial.second);
+    Nodo estadoInicial = crear_nodo(v_origen,  atributosInicial.first, atributosInicial.second, 0, h_inicial, -1);
 
     // como es el estado inical y no podemos asignar NULL en un parametro de la funcion haremos el nodo
    
@@ -109,11 +117,14 @@ void A_star::a_star(int v_origen, int v_destino, string mapa_path, string output
             vector<Arco> sucesores;
             sucesores = expandir_nodo(nodo_actual);
             for (Arco s : sucesores){
-                Nodo sn = crear_nodo(s.idDestino, nodo_actual.g + s.coste, funcion_heuristica(), nodo_actual.id);
+                pair<int, int> atributos = grafo.buscar_vertice(s.idDestino);
+                float h_nodo = funcion_heuristica(atributos.first, atributos.second);
+                Nodo sn = crear_nodo(s.idDestino, atributos.first, atributos.second, nodo_actual.g + s.coste, h_nodo, nodo_actual.id);
                 //Añadirlos a ABIERTA --> primero comprobamos si el vertice ya está dentro con find or something
                 //si esta dentro hacemos cambiar_nodo
                 auto nodo_buscado = abierta.buscar_nodo(sn.id);
                 
+
                 if (nodo_buscado != abierta.lista.end()){
                     // ESTA EN ABIERTA
 
@@ -187,8 +198,17 @@ void A_star::a_star(int v_origen, int v_destino, string mapa_path, string output
 }
 
 
-int A_star::funcion_heuristica(){
-        // ignorar q no esta hecho
+float A_star::funcion_heuristica(int nodo_longitud, int nodo_latitud){
+        // h(n)=∣xn​−xd​∣+∣yn​−yd​∣
+        //h(n)=∣Longitudn​−Longitudd​∣+∣Latitudn​−Latitudd​∣
+
+        //h(n)=(Longitudn​−Longitudd​)2+(Latitudn​−Latitudd​)2​
+    int valor1 = (nodo_longitud - longitud_destino)*(nodo_longitud - longitud_destino);
+    int valor2 = (nodo_latitud - latitud_destino)*(nodo_latitud - latitud_destino);
+
+    
+    return sqrt(valor1 + valor2) ;
+
 }
 
 vector<Arco> A_star::expandir_nodo(Nodo nodo){
@@ -203,9 +223,11 @@ vector<Arco> A_star::expandir_nodo(Nodo nodo){
     
 }
 
-Nodo A_star::crear_nodo(int id, int g, int h, int nodoPadre){
+Nodo A_star::crear_nodo(int id, int longitud, int latitud, int g, int h, int nodoPadre){
     Nodo nuevo_nodo;
     nuevo_nodo.id = id;
+    nuevo_nodo.latitud =latitud;
+    nuevo_nodo.longitud = longitud;
     nuevo_nodo.g = g;
     nuevo_nodo.h = h;
     nuevo_nodo.f = g + h;

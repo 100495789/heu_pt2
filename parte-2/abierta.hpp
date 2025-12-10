@@ -11,12 +11,15 @@ struct Nodo
 {
     // id del vertice
     int id;
+    int longitud;
+    int latitud;
+
     // g(n): costo acumulado desde nodo inicial hasta el nodo actual
     int g;
     //    # h(n): estimación del costo restante desde nodo actual n hasta nodo objetivo
-    int h;
+    float h;
     //    # f(n): costo estimado del camino pasando por n
-    int f;
+    float f;
 
     int id_padre;
 
