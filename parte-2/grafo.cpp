@@ -22,7 +22,7 @@ void Grafo::leer_fichero_coordenadas(const string nombre_mapa){
     const string coor_fichero = nombre_mapa + ".co";
     ifstream fichero(coor_fichero);
 
-    cout << "estamos dentro" << endl;
+    //cout << "estamos dentro" << endl;
     if (!fichero.is_open())
     {
         cout << "Error al abrir " << coor_fichero << "\n";
@@ -54,7 +54,7 @@ void Grafo::leer_fichero_grafico(const string nombre_mapa){
     const string graf_fichero = nombre_mapa + ".gr";
     ifstream fichero(graf_fichero);
 
-    cout << "estamos dentro" << endl;
+    //cout << "estamos dentro" << endl;
     if (!fichero.is_open())
     {
         cout << "Error al abrir " << graf_fichero << "\n";

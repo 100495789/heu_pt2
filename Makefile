@@ -153,6 +153,30 @@ abierta.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/abierta.cpp.s
 .PHONY : abierta.cpp.s
 
+algoritmo.o: algoritmo.cpp.o
+.PHONY : algoritmo.o
+
+# target to build an object file
+algoritmo.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/algoritmo.cpp.o
+.PHONY : algoritmo.cpp.o
+
+algoritmo.i: algoritmo.cpp.i
+.PHONY : algoritmo.i
+
+# target to preprocess a source file
+algoritmo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/algoritmo.cpp.i
+.PHONY : algoritmo.cpp.i
+
+algoritmo.s: algoritmo.cpp.s
+.PHONY : algoritmo.s
+
+# target to generate assembly for a file
+algoritmo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/out.dir/build.make CMakeFiles/out.dir/algoritmo.cpp.s
+.PHONY : algoritmo.cpp.s
+
 cerrada.o: cerrada.cpp.o
 .PHONY : cerrada.o
 
@@ -237,6 +261,9 @@ help:
 	@echo "... abierta.o"
 	@echo "... abierta.i"
 	@echo "... abierta.s"
+	@echo "... algoritmo.o"
+	@echo "... algoritmo.i"
+	@echo "... algoritmo.s"
 	@echo "... cerrada.o"
 	@echo "... cerrada.i"
 	@echo "... cerrada.s"

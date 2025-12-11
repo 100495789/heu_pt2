@@ -32,8 +32,8 @@ struct Arco
 class Grafo
 {
     public:
-        std::vector<Vertice> vertices;
-        std::vector<std::vector<Arco>> lista_adjaciencia;
+        vector<Vertice> vertices;
+        vector<vector<Arco>> lista_adjaciencia;
 
         int num_vertices = 0;
         int num_arcos = 0;
@@ -43,12 +43,13 @@ class Grafo
         Grafo();
 
         // Funciones de Lectura y Creación
-        void leer_fichero_coordenadas(const std::string nombre_mapa);
+        void leer_fichero_coordenadas(const string nombre_mapa);
         void añadir_vertices (int id, int longi, int latitud);
-        void leer_fichero_grafico(const std::string nombre_mapa);
+        void leer_fichero_grafico(const string nombre_mapa);
         void añadir_arcos(int v_origen, int v_destino, int coste);
         pair<int, int> buscar_vertice(int id);
         // Funciones de Impresión y Utilidad
+
         void mostrar_vertices();
         void imprimir_lista();
         void mostrar_lista_adyacencia(int v_inicio, int v_fin = 10);

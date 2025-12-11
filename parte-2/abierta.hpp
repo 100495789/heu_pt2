@@ -23,16 +23,26 @@ struct Nodo
 
     int id_padre;
 
+    int coste;
+
 };
 
-class Comparacion {
+class Comparacion_A_star {
     public:
-        Comparacion ();
+        Comparacion_A_star();
 
         using is_transparent = void;
         bool operator() (const Nodo& nodo_max, const Nodo& nodo_nuevo) const;
         bool operator() (const int& id_a, const Nodo& nodo_b) const;
         bool operator() (const Nodo& nodo_a, const int& id_b) const;
+};
+
+class Comparacion_Dijkstra {
+    public:
+        Comparacion_Dijkstra();
+
+        bool operator() (const Nodo& nodo_max, const Nodo& nodo_nuevo) const;
+       
 };
 
 
@@ -42,7 +52,7 @@ class ListaAbierta
     public:
         
         //priority_queue<Nodo, vector<Nodo>, Comparacion> lista;
-        set<Nodo, Comparacion> lista;
+        set<Nodo, Comparacion_A_star> lista;
 
 
         // Constructor por defecto
@@ -52,7 +62,7 @@ class ListaAbierta
         void insertar_nodo(Nodo nodo);
         Nodo pop();
         void imprimir_nodos();
-        std::set<Nodo, Comparacion>::iterator buscar_nodo(int id);
+        std::set<Nodo, Comparacion_A_star>::iterator buscar_nodo(int id);
         //void lista_prioridad(int g, int h);
 };
 
