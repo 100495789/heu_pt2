@@ -306,7 +306,7 @@ void Dijkstra::dijkstra(int v_origen, int v_destino, string mapa_path, string ou
         if (nodo_actual.id == v_destino){
             // Hemos llegado al destino
             coste_final = Dist[v_destino];
-            imprimir_camino(Dist, Prev);
+            imprimir_camino(Dist, Prev, output);
             return;
         }
         // 3. Para cada vecino v de u:
@@ -351,7 +351,14 @@ void Dijkstra::dijkstra(int v_origen, int v_destino, string mapa_path, string ou
 }
 
 
-void Dijkstra::imprimir_camino(vector<int> Dist, vector<int> Prev){
+void Dijkstra::imprimir_camino(vector<int> Dist, vector<int> Prev, string output_path) {
+    ofstream fichero(output_path);
+    if (!fichero.is_open())
+    {
+        cout << "Error al abrir " << output_path << "\n";
+        exit(EXIT_FAILURE);
+    }
+    
     // 1. Trazar el camino hacia atrás
     vector<int> path;
     int current = id_destino;
@@ -370,7 +377,7 @@ void Dijkstra::imprimir_camino(vector<int> Dist, vector<int> Prev){
     for (size_t i = 0; i < path.size(); ++i) {
         int u = path[i];
         
-        cout << u;
+        fichero << u;
 
         if (i < path.size() - 1) {
             int v = path[i+1];
@@ -385,8 +392,8 @@ void Dijkstra::imprimir_camino(vector<int> Dist, vector<int> Prev){
             }
             
             // Imprimir el coste de la arista y la flecha al siguiente nodo
-            cout << " - (" << weight << ") - ";
+            fichero << " - (" << weight << ") - ";
         }
     }
-    cout << endl;
+    fichero << endl;
 }

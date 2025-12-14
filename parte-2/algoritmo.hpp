@@ -65,7 +65,7 @@ class Dijkstra{
         Dijkstra(); 
         void dijkstra(int v_origen, int v_destino, string mapa_path, string output);
         //void inicializar_nodos(vector<Vertice> vertices);
-        void imprimir_camino(vector<int> Dist, vector<int> Prev);
+        void imprimir_camino(vector<int> Dist, vector<int> Prev, string output_path);
         //vector<Nodo> buscar_vecinos(Nodo nodo);
     };
 
