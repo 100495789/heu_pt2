@@ -25,7 +25,7 @@ bool Comparacion_A_star::operator() (const Nodo& nodo_a, const int& id_b) const 
 }
 
 
-Comparacion_A_star::Comparacion_A_star() = default;
+Comparacion_Dijkstra::Comparacion_Dijkstra() = default;
 
 bool Comparacion_Dijkstra::operator() (const Nodo& nodo_max, const Nodo& nodo_nuevo) const{
     if (nodo_max.g != nodo_nuevo.g) {

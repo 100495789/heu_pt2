@@ -10,6 +10,7 @@
 #include "abierta.hpp"
 #include "cerrada.hpp"
 
+#define oo 0x3f3f3f3f
 
 using namespace std;
 
@@ -56,12 +57,16 @@ class Dijkstra{
         
     public:
         Grafo grafo;
-
+        int coste_final;
         vector<Nodo> nodos;
+        //pair<int, int> pii; // pair<distancia, nodo>
         priority_queue<Nodo, vector<Nodo>, Comparacion_Dijkstra> cola_prioridad;
+    
         Dijkstra(); 
         void dijkstra(int v_origen, int v_destino, string mapa_path, string output);
-        void inicializar_nodos(vector<Vertice> vertices);
-};
+        //void inicializar_nodos(vector<Vertice> vertices);
+        void imprimir_camino(vector<int> Dist, vector<int> Prev);
+        //vector<Nodo> buscar_vecinos(Nodo nodo);
+    };
 
 #endif

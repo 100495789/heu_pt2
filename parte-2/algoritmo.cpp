@@ -5,6 +5,8 @@
 #include <algorithm>
 #include "algoritmo.hpp"
 
+#include <limits>
+
 #include <iostream> // Para cout
 using namespace std;
 
@@ -221,7 +223,6 @@ vector<Arco> A_star::expandir_nodo(Nodo nodo){
         sucesores.push_back(s);
     }
     return sucesores;  
-    
 }
 
 Nodo A_star::crear_nodo(int id, int longitud, int latitud, int g, int h, int nodoPadre, int coste){
@@ -269,7 +270,6 @@ void Dijkstra::dijkstra(int v_origen, int v_destino, string mapa_path, string ou
 
     id_destino = v_destino;
     id_origen = v_origen;
-
     /*
     Dijkstra(Grafo G, Nodo origen s):
         1. Para cada nodo v en G:
@@ -277,10 +277,15 @@ void Dijkstra::dijkstra(int v_origen, int v_destino, string mapa_path, string ou
                 prev[v] = NULL
         3. Crear una cola de prioridad Q, con todos
         los nodos de G ordenados por dist[v]*/
-    inicializar_nodos(grafo.vertices);
+    vector<int> Dist(grafo.num_vertices, oo); // La distancia hacia todos los vertices. Inicialmente para cada vertice su valor es infinito.
+	vector<int> Prev(grafo.num_vertices, -1); // Este arreglo nos permitira determinar los nodos procesados.
+
+    Dist[v_origen] = 0; // Valor inicial del vertice de partida.
+    //inicializar_nodos(grafo.vertices);
     
     // 2. dist[origen] = 0
     Nodo origen;
+    origen.id = v_origen;
     origen.g = 0;
     origen.id_padre = -1;
     cola_prioridad.push(origen);
@@ -288,15 +293,47 @@ void Dijkstra::dijkstra(int v_origen, int v_destino, string mapa_path, string ou
     //  4. Mientras Q no este vacıa:
 
     while (!cola_prioridad.empty()){
-        /**/
-    }
+        /*1. u = Nodo con la distancia m´as peque~na en Q*/
+        Nodo nodo_actual = cola_prioridad.top();
+        int u = nodo_actual.id;
+        int d = nodo_actual.g;
+        // 2. Eliminar u de Q
+        cola_prioridad.pop();
+        if (d > Dist[u]) {
+            continue; // Ya hemos encontrado una mejor distancia para 'u'
+        }
+
+        if (nodo_actual.id == v_destino){
+            // Hemos llegado al destino
+            coste_final = Dist[v_destino];
+            imprimir_camino(Dist, Prev);
+            return;
+        }
+        // 3. Para cada vecino v de u:
+        //vector<Nodo> vecinos = buscar_vecinos(nodo_actual);
+        
+		for (const Arco & s : grafo.lista_adjaciencia[u]) {
+            int v = s.idDestino;
+            int peso = s.coste;
+            
+            // Relajación: Si encontramos un camino más corto a 'v' a través de 'u'
+            if (Dist[u] != oo && Dist[u] + peso < Dist[v]) {
+                
+                Dist[v] = Dist[u] + peso; // Actualizar distancia
+                Prev[v] = u; // **Almacenar el predecesor para reconstruir el camino**
+                
+                // Insertar 'v' con la nueva distancia en la cola
+                Nodo nuevo_nodo;
+                nuevo_nodo.id = v;
+                nuevo_nodo.g = Dist[v];
+                nuevo_nodo.id_padre = u;
+                cola_prioridad.push(nuevo_nodo);
+            }
+        }
 
     /*   
-        1. u = Nodo con la distancia m´as peque~na en Q
-        2. Eliminar u de Q
-        3. Para cada vecino v de u:
         1. Si v est´a en Q:
-        2. Si dist[u] + peso(u, v) < dist[v]:
+            2. Si dist[u] + peso(u, v) < dist[v]:
         dist[v] = dist[u] + peso(u, v)
         prev[v] = u
         Actualizar la posici´on de v en Q
@@ -307,21 +344,49 @@ void Dijkstra::dijkstra(int v_origen, int v_destino, string mapa_path, string ou
 
 
 }
+// Si la cola se vacía y no llegamos al destino
+    if (Dist[v_destino] == oo) {
+        cout << "El destino no es alcanzable desde el origen." << endl;
+    }
+}
 
 
-void Dijkstra::inicializar_nodos(vector<Vertice> vertices){
-    /*1. Para cada nodo v en G:
-                dist[v] = infinito
-                prev[v] = NULL
-    3. Crear una cola de prioridad Q, con todos
-        los nodos de G ordenados por dist[v]*/
-    for (int i = 0; i <= vertices.size(); ++i) {
-        if (i =! id_origen){
-            Nodo nuevo_nodo;
-            nuevo_nodo.id = vertices[i].id;
-            nuevo_nodo.id_padre = -1;
-            nuevo_nodo.g = INFINITY;
-            cola_prioridad.push(nuevo_nodo);
+void Dijkstra::imprimir_camino(vector<int> Dist, vector<int> Prev){
+    // 1. Trazar el camino hacia atrás
+    vector<int> path;
+    int current = id_destino;
+    
+
+    
+    while (current != -1) {
+        path.push_back(current);
+        current = Prev[current];
+    }
+    
+    // El camino se construye al revés, lo invertimos para ir de origen a destino
+    reverse(path.begin(), path.end());
+
+    
+    for (size_t i = 0; i < path.size(); ++i) {
+        int u = path[i];
+        
+        cout << u;
+
+        if (i < path.size() - 1) {
+            int v = path[i+1];
+            
+            // Buscar el peso de la arista (u, v)
+            int weight = -1;
+            for (const Arco& s : grafo.lista_adjaciencia[u]) {
+                if (s.idDestino == v) {
+                    weight = s.coste;
+                    break;
+                }
+            }
+            
+            // Imprimir el coste de la arista y la flecha al siguiente nodo
+            cout << " - (" << weight << ") - ";
         }
-       
+    }
+    cout << endl;
 }

@@ -1,0 +1,62 @@
+# =======================================================
+# 1. ARCHIVOS GENERADOS POR EL COMPILADOR/ENLACE (Linker)
+# =======================================================
+# Archivos objeto (intermedios de la compilación)
+*.o
+# Archivos de dependencia generados por el compilador
+*.d
+# Archivos de librería estática/dinámica
+*.a
+*.lib
+*.so
+*.dll
+
+# Ejecutables (el resultado final del build)
+# Si tu ejecutable se llama 'out' (como en tu caso), ignóralo
+out
+# Otros nombres comunes de ejecutables
+*.exe
+a.out
+*.app
+
+# =======================================================
+# 2. ARCHIVOS GENERADOS POR SISTEMAS DE BUILD (CMake/Make)
+# =======================================================
+# El directorio principal generado por CMake
+CMakeFiles/
+# Archivos de configuración y caché de CMake
+CMakeCache.txt
+CTestTestfile.cmake
+cmake_install.cmake
+compile_commands.json
+install_manifest.txt
+CTestTestfile.cmake
+Testing/
+.cmake/
+
+# Archivos específicos de Make que no son necesarios
+Makefile
+Makefile2
+progress.make
+build.make
+link.txt
+progress.marks
+compiler_depend.internal
+
+# =======================================================
+# 3. ARCHIVOS TEMPORALES Y DEL EDITOR
+# =======================================================
+# Archivos temporales de Vim o editores de texto
+*~
+# Archivos de backup
+*.bak
+# Archivos de depuración y logs
+*.log
+*.swp
+
+# =======================================================
+# 4. DIRECTORIOS DE BUILD COMUNES
+# =======================================================
+# Si usas un directorio de build separado (ej. mkdir build)
+build/
+bin/
