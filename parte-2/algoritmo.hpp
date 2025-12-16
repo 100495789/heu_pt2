@@ -19,8 +19,8 @@ using namespace std;
 class A_star{
 
     private:
-        int longitud_destino;
-        int latitud_destino;
+        double longitud_destino;
+        double latitud_destino;
         int id_destino;
         int id_origen;
     
@@ -41,10 +41,10 @@ public:
 
 
 
-    void a_star(int v_origen, int v_destino, string mapa_path, string output);
-    float funcion_heuristica(int nodo_longitud, int nodo_latitud);
+    bool a_star(int v_origen, int v_destino, string mapa_path, string output);
+    double funcion_heuristica(double nodo_longitud, double nodo_latitud);
     vector<Arco> expandir_nodo(Nodo nodo);
-    Nodo crear_nodo(int id, int longitud, int latitud, int g, int h, int nodoPadre, int coste);
+    Nodo crear_nodo(int id, double longitud, double latitud, int g, double h, int nodoPadre);
     void escribir_solucion(const string& file_path,const vector<Nodo>& camino);
 
 };

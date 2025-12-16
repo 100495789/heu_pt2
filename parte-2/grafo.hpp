@@ -17,8 +17,8 @@ using namespace std;
 struct Vertice
 {
     int id; 
-    int longitud;
-    int latitud;
+    double longitud;
+    double latitud;
 };
 
 // 2. ESTRUCTURA ARCO
@@ -44,13 +44,15 @@ class Grafo
 
         // Funciones de Lectura y Creación
         void leer_fichero_coordenadas(const string nombre_mapa);
-        void añadir_vertices (int id, int longi, int latitud);
-        pair<int, int> buscar_vertice(int id);
+        void añadir_vertices (int id, double longi, double latitud);
+        pair<double, double> buscar_vertice(int id);
 
         
         void leer_fichero_grafico(const string nombre_mapa);
         void añadir_arcos(int v_origen, int v_destino, int coste);
         
+        int buscar_coste_arco(int v_origen, int v_destino) const;
+
         // Funciones de Impresión y Utilidad
 
         void mostrar_vertices();
