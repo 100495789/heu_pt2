@@ -37,7 +37,8 @@ void Grafo::leer_fichero_coordenadas(const string nombre_mapa){
     }
     
 
-    int id, longi, lati;
+    int id;
+    double longi, lati;
     string valor ;
     while (fichero){
     // el formato es v 1 -73530767 41085396
@@ -86,7 +87,7 @@ void Grafo::leer_fichero_grafico(const string nombre_mapa){
     return ;
 }
 
-void Grafo::añadir_vertices (int id, int longi, int latitud) {
+void Grafo::añadir_vertices (int id, double longi, double latitud) {
     
     Vertice v;
     v.id = id;
@@ -137,9 +138,17 @@ void Grafo::imprimir_lista(){
     }
 }
 
-pair<int, int> Grafo::buscar_vertice(int id){
+pair<double, double> Grafo::buscar_vertice(int id){
     
-    return pair<int, int>(vertices[id].longitud, vertices[id].latitud);
+    return pair<double, double>(vertices[id].longitud, vertices[id].latitud);
 }
 
-
+int Grafo::buscar_coste_arco(int v_origen, int v_destino) const{
+    for(int j = 0; j < lista_adjaciencia[v_origen].size(); j++){
+        const Arco& arco = lista_adjaciencia[v_origen][j];
+        if (arco.idDestino == v_destino){
+            return arco.coste;
+        }
+    }
+    return -1; // no existe arco
+}

@@ -21,20 +21,23 @@ int main(int argc, char *argv[]){
     string fichero_salida = argv[4];
     auto start_A_star = chrono::high_resolution_clock::now();
     A_star a_star;
-    a_star.a_star(vertice1, vertice2, nombre_mapa, fichero_salida);
+    if (a_star.a_star(vertice1, vertice2, nombre_mapa, fichero_salida)){
     
     auto end_A_star = std::chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed = end_A_star - start_A_star;
     cout << "A* desde el vertice " << vertice1 << " hasta el vertice " << vertice2 << "\n";
     cout << "# vertices: " << a_star.grafo.num_vertices << "\n";    
     cout << "# arcos   : " << a_star.grafo.num_arcos << "\n";
-    cout << "Solución óptima con coste " << a_star.coste_final << "\n\n";
+    cout << "Solución óptima con coste " << a_star.coste_final << "\n";
     cout << "Tiempo de ejecución: " << elapsed.count() << " segundos" << endl;
 
     cout << "# expansiones      : " << a_star.num_expansiones << " ( " << a_star.num_nodos_expandidos/elapsed.count() << " nodos/sec)" << "\n";
     cout << endl;
+    }
+    else {
+        cout << "No se ha encontrado solución A*." << endl;
 
-    
+    }
     
     auto start_dijkstra = chrono::high_resolution_clock::now();
 

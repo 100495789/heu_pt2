@@ -18,4 +18,4 @@ class ListaCerrada {
 
 };
 
-#endif // ABIERTA_HPP
+#endif // CERRADA_HPP
