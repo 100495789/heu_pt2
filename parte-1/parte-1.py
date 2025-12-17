@@ -107,7 +107,7 @@ def main():
         print("| ")
     print("+" + "---+" * n)
 
-    # getting solutions
+    # retrieve solutions
     solutions = problem.getSolutions()
     print(f"{len(solutions)} soluciones encontradas")
 
