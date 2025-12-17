@@ -37,9 +37,6 @@ bool Comparacion_Dijkstra::operator() (const Nodo& nodo_max, const Nodo& nodo_nu
 
 ListaAbierta::ListaAbierta() = default;
 
-
-
-
 void ListaAbierta::insertar_nodo(Nodo nodo){
     // insertamos en el set
     lista.insert(nodo);
@@ -60,8 +57,3 @@ void ListaAbierta::imprimir_nodos(){
     cout << endl;
 }
 
-std::set<Nodo, Comparacion_A_star>::iterator ListaAbierta::buscar_nodo(int id){
-    
-    auto nodo = lista.find(id);
-    return nodo;
-}

@@ -12,7 +12,9 @@ using namespace std;
 class ListaCerrada {
     public:
         ListaCerrada();
-        vector<Nodo> lista; //id & f
+        vector<Nodo> lista; 
+        vector<int> visitados; // en cada posicion guardamos el coste g del nodo visitado
+
         void añadir_nodo(Nodo nodo);
         vector<Nodo>::iterator buscar_nodo_en_vector(int id_a_buscar);
 

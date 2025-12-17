@@ -138,17 +138,51 @@ void Grafo::imprimir_lista(){
     }
 }
 
-pair<double, double> Grafo::buscar_vertice(int id){
-    
-    return pair<double, double>(vertices[id].longitud, vertices[id].latitud);
-}
+void Grafo::encontrarExtremos(){
+    ofstream fichero("extremos.txt", ios_base::app);
+    if (!fichero.is_open())
+    {
+        cout << "Error al abrir extremos.txt" << "\n";
+        exit(EXIT_FAILURE);
+    }
 
-int Grafo::buscar_coste_arco(int v_origen, int v_destino) const{
-    for(int j = 0; j < lista_adjaciencia[v_origen].size(); j++){
-        const Arco& arco = lista_adjaciencia[v_origen][j];
-        if (arco.idDestino == v_destino){
-            return arco.coste;
+    // Inicializamos todo con los datos de la posición 1, ignorando la 0
+    int id_norte = vertices[1].id;
+    int id_sur = vertices[1].id;
+    int id_este = vertices[1].id;
+    int id_oeste = vertices[1].id;
+    double max_x = vertices[1].longitud;
+    double min_x = vertices[1].longitud;
+    double max_y = vertices[1].latitud;
+    double min_y = vertices[1].latitud;
+
+    // Recorremos el vector empezando explícitamente desde el índice 1
+    for (size_t i = 1; i < vertices.size(); ++i) {
+        // Opcional: si el archivo tiene huecos y el ID es 0, lo saltamos
+        if (vertices[i].id == 0) continue; 
+
+        if (vertices[i].latitud > max_y) {
+            max_y = vertices[i].latitud;
+            id_norte = vertices[i].id;
+        }
+        if (vertices[i].latitud < min_y) {
+            min_y = vertices[i].latitud;
+            id_sur = vertices[i].id;
+        }
+        if (vertices[i].longitud > max_x) {
+            max_x = vertices[i].longitud;
+            id_este = vertices[i].id;
+        }
+        if (vertices[i].longitud < min_x) {
+            min_x = vertices[i].longitud;
+            id_oeste = vertices[i].id;
         }
     }
-    return -1; // no existe arco
+    
+    fichero << "Búsqueda de Extremos para .BYE ---" << std::endl;
+    fichero << "Extremo Norte (ID): " << id_norte << std::endl;
+    fichero << "Extremo Sur (ID): " << id_sur << std::endl;
+    fichero << "Extremo Este (ID): " << id_este << std::endl;
+    fichero << "Extremo Oeste (ID): " << id_oeste << std::endl;
+
 }

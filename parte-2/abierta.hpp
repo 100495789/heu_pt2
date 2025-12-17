@@ -62,7 +62,7 @@ class ListaAbierta
         void insertar_nodo(Nodo nodo);
         Nodo pop();
         void imprimir_nodos();
-        std::set<Nodo, Comparacion_A_star>::iterator buscar_nodo(int id);
+        //std::set<Nodo, Comparacion_A_star>::iterator buscar_nodo(int id);
         //void lista_prioridad(int g, int h);
 };
 

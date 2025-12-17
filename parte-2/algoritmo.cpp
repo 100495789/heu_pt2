@@ -17,19 +17,22 @@ bool A_star::a_star(int v_origen, int v_destino, string mapa_path, string output
     grafo.leer_fichero_coordenadas(mapa_path);
     grafo.leer_fichero_grafico(mapa_path);
     
-    // 2. Inicializamos los vectores con el tamaño exacto (num_vertices + 1)
-    vector<int> visitados_en_cerrada(grafo.num_vertices + 1, -1);
-
-    pair<double, double> atributosFinal = grafo.buscar_vertice(v_destino);
-    longitud_destino = atributosFinal.first;
-    latitud_destino = atributosFinal.second;
+    // 2. Inicializamos el vector auxiliar de la lista cerrada con el tamaño exacto (num_vertices + 1)
+    //vector<int> visitados_en_cerrada(grafo.num_vertices + 1, -1);
+    cerrada.visitados.resize(grafo.num_vertices + 1, -1);
+    // constantes del destino
+   // pair<double, double> atributosFinal = grafo.buscar_vertice(v_destino);
+    longitud_destino = grafo.vertices[v_destino].longitud;
+    latitud_destino = grafo.vertices[v_destino].latitud;
     id_destino = v_destino;
-    id_origen = v_origen;
 
-    pair<int, int> atributosInicial = grafo.buscar_vertice(v_origen);
-    
-    float h_inicial = funcion_heuristica(atributosInicial.first, atributosInicial.second);
-    Nodo estadoInicial = crear_nodo(v_origen,  atributosInicial.first, atributosInicial.second, 0, h_inicial, -1);
+    // 3. Crear el nodo inicial y añadirlo a la lista abierta
+    id_origen = v_origen;
+    int longitud_inicial = grafo.vertices[v_origen].longitud;
+    int latitud_inicial = grafo.vertices[v_origen].latitud;
+    //pair<int, int> atributosInicial = grafo.buscar_vertice(v_origen);
+    float h_inicial = funcion_heuristica(longitud_inicial, latitud_inicial);
+    Nodo estadoInicial = crear_nodo(v_origen,  longitud_inicial, latitud_inicial, 0, h_inicial, -1);
 
     abierta.insertar_nodo(estadoInicial);
 
@@ -39,7 +42,7 @@ bool A_star::a_star(int v_origen, int v_destino, string mapa_path, string output
 
         Nodo nodo_actual = abierta.pop();
         cerrada.añadir_nodo(nodo_actual);
-        visitados_en_cerrada[nodo_actual.id] = nodo_actual.g;
+        cerrada.visitados[nodo_actual.id] = nodo_actual.g;
         // SI N es Estado-final ENTONCES EXITO=Verdadero
         if (nodo_actual.id == v_destino) {
             exito = true;
@@ -48,21 +51,29 @@ bool A_star::a_star(int v_origen, int v_destino, string mapa_path, string output
 
         else{
             
-            cout << "Nodos en ABIERTA: " << abierta.lista.size() << " | Nodos en CERRADA: " << cerrada.lista.size() << "\r";
+            //cout << "Nodos en ABIERTA: " << abierta.lista.size() << " | Nodos en CERRADA: " << cerrada.lista.size() << "\r";
             num_expansiones++;
+
+            // Para cada sucesor S de N hacer
             for(int j = 0; j < grafo.lista_adjaciencia[nodo_actual.id].size(); j++){
+                // los sucesores son los arcos que están adyacentes al nodo actual
                 Arco s = grafo.lista_adjaciencia[nodo_actual.id][j];
                 num_nodos_expandidos++;
-                pair<int, int> atributos = grafo.buscar_vertice(s.idDestino);
 
-                float h_nodo = funcion_heuristica(atributos.first, atributos.second);
-                Nodo sucesor = crear_nodo(s.idDestino, atributos.first, atributos.second, nodo_actual.g + s.coste, h_nodo, nodo_actual.id);
+                // Crear el nodo sucesor con sus respectivos atributos
+                //pair<int, int> atributos = grafo.buscar_vertice(s.idDestino);
+                int longitud_sucesor = grafo.vertices[s.idDestino].longitud;
+                int latitud_sucesor = grafo.vertices[s.idDestino].latitud;
+                float h_nodo = funcion_heuristica(longitud_sucesor, latitud_sucesor);
+                Nodo sucesor = crear_nodo(s.idDestino, longitud_sucesor, latitud_sucesor, nodo_actual.g + s.coste, h_nodo, nodo_actual.id);
                 
-                if (visitados_en_cerrada[sucesor.id] != -1 && visitados_en_cerrada[sucesor.id] <= sucesor.g) {
+                // Si S está en CERRADA con un coste menor o igual que el coste de S ENTONCES no le metemos en ABIERTA
+                if (cerrada.visitados[sucesor.id] != -1 && cerrada.visitados[sucesor.id] <= sucesor.g) {
                     
                     continue; // Si ya está en cerrada, no hacemos nada
                 }
-                visitados_en_cerrada[sucesor.id] = sucesor.g;
+                // si no está en cerrada o tiene un coste mayor, lo añadimos a abierta para ser examinado
+                cerrada.visitados[sucesor.id] = sucesor.g;
                 abierta.insertar_nodo(sucesor); 
             }
         
@@ -72,19 +83,19 @@ bool A_star::a_star(int v_origen, int v_destino, string mapa_path, string output
         // Si EXITO Entonces Solución=camino desde I a N a través de los punteros de G
 
         // Si no Solución=Fracaso
+
+        //declaraciones para iniciar la reconstrucción del camino
         vector<Nodo> solucion;
         int id = id_destino;
-        
+        // reconstrucción del camino desde el destino al origen
         while (id != -1) { 
-                
+                // reconstruimos el camino hacia atrás con id_padre y agregamos los nodos a la solución
                 auto it = cerrada.buscar_nodo_en_vector(id); 
-
                 Nodo nodo_actual = *it;
                 solucion.push_back(nodo_actual);
-                //cout << nodo_actual.id << " - (" << nodo_actual.coste << ") - " ;
                 id = nodo_actual.id_padre; 
             }
-        //cout << endl;
+        // invertimos el camino para que vaya del origen al destino y escribimos la solución en el fichero
         reverse(solucion.begin(), solucion.end());
         escribir_solucion(output, solucion);
         return true;
@@ -99,21 +110,13 @@ double A_star::funcion_heuristica(double nodo_longitud, double nodo_latitud){
     // distancia euclidiana 
     double diffX = nodo_longitud - longitud_destino;
     double diffY = nodo_latitud - latitud_destino;
-    return sqrt(diffX * diffX + diffY * diffY)*0.9;
+    return sqrt(diffX * diffX + diffY * diffY)*0.1;
 }
 
-vector<Arco> A_star::expandir_nodo(Nodo nodo){
-    //grafo.lista_adjaciencia.find
-    vector<Arco> sucesores;
-    for(int j = 0; j < grafo.lista_adjaciencia[nodo.id].size(); j++){
-        Arco s = grafo.lista_adjaciencia[nodo.id][j];
-        // el strucut arco tiene v_destino = id y coste = g
-        sucesores.push_back(s);
-    }
-    return sucesores;  
-}
+
 
 Nodo A_star::crear_nodo(int id, double longitud, double latitud, int g, double h, int nodoPadre){
+    // asignamos los valores al nuevo nodo
     Nodo nuevo_nodo;
     nuevo_nodo.id = id;
     nuevo_nodo.latitud =latitud;
@@ -126,6 +129,7 @@ Nodo A_star::crear_nodo(int id, double longitud, double latitud, int g, double h
 }
 
 void A_star::escribir_solucion(const string& file_path, const vector<Nodo>& camino){
+    // Abrir el archivo para escribir la solución
     ofstream fichero(file_path);
     if (!fichero.is_open())
     {
@@ -142,7 +146,7 @@ void A_star::escribir_solucion(const string& file_path, const vector<Nodo>& cami
         fichero << n.id << " - ("<< camino[i+1].g - camino[i].g << ") - ";
         
     }
-    //const Nodo& = camino[camino.size()];
+    // imprimos el último nodo sin flecha
     const Nodo& n = camino.back();
     fichero << n.id;
     fichero << endl;
@@ -151,10 +155,11 @@ void A_star::escribir_solucion(const string& file_path, const vector<Nodo>& cami
 Dijkstra::Dijkstra() = default;
 
 void Dijkstra::dijkstra(int v_origen, int v_destino, string mapa_path, string output){
+    // 1. Leemos el grafo para saber cuántos vértices hay
     grafo.leer_fichero_coordenadas(mapa_path);
     grafo.leer_fichero_grafico(mapa_path);
-
-
+    //grafo.encontrarExtremos();
+    // asginamos los ids de origen y destino
     id_destino = v_destino;
     id_origen = v_origen;
     /*
@@ -164,13 +169,20 @@ void Dijkstra::dijkstra(int v_origen, int v_destino, string mapa_path, string ou
                 prev[v] = NULL
         3. Crear una cola de prioridad Q, con todos
         los nodos de G ordenados por dist[v]*/
-    vector<int> Dist(grafo.num_vertices +1, oo); // La distancia hacia todos los vertices. Inicialmente para cada vertice su valor es infinito.
-	vector<int> Prev(grafo.num_vertices +1, -1); // Este arreglo nos permitira determinar los nodos procesados.
 
-    Dist[v_origen] = 0; // Valor inicial del vertice de partida.
-    //inicializar_nodos(grafo.vertices);
+    // Inicializamos los vectores Dist y Prev
+    //vector<int> Dist(grafo.num_vertices +1, oo); 
+    // La distancia hacia todos los vertices. Inicialmente para cada vertice su valor es infinito.
+	//vector<int> Prev(grafo.num_vertices +1, -1); 
+    // Este arreglo nos permitira determinar los nodos procesados.
+    distancias.resize(grafo.num_vertices +1, oo);
+    padres.resize(grafo.num_vertices +1, -1);
+
+
+    distancias[v_origen] = 0; // Valor inicial del vertice de partida.
     
     // 2. dist[origen] = 0
+    // metemos el nodo origen en la cola de prioridad
     Nodo origen;
     origen.id = v_origen;
     origen.g = 0;
@@ -178,67 +190,54 @@ void Dijkstra::dijkstra(int v_origen, int v_destino, string mapa_path, string ou
     cola_prioridad.push(origen);
     
     //  4. Mientras Q no este vacıa:
-
     while (!cola_prioridad.empty()){
-        /*1. u = Nodo con la distancia m´as peque~na en Q*/
+        /*1. tomamos el nodo con menor g que es el primero en la cola*/
         Nodo nodo_actual = cola_prioridad.top();
-        int u = nodo_actual.id;
-        int d = nodo_actual.g;
+        int id_nodo_actual = nodo_actual.id;
+        int distancia = nodo_actual.g;
         // 2. Eliminar u de Q
         cola_prioridad.pop();
-        if (d > Dist[u]) {
+        num_nodos_expandidos++;
+        if (distancia > distancias[id_nodo_actual]) {
             continue; // Ya hemos encontrado una mejor distancia para 'u'
         }
 
         if (nodo_actual.id == v_destino){
             // Hemos llegado al destino
-            coste_final = Dist[v_destino];
-            imprimir_camino(Dist, Prev, output);
+            coste_final = distancias[v_destino];
+            imprimir_camino(output);
             return;
         }
-        // 3. Para cada vecino v de u:
-        //vector<Nodo> vecinos = buscar_vecinos(nodo_actual);
-        
-		for (const Arco & s : grafo.lista_adjaciencia[u]) {
-            int v = s.idDestino;
-            int peso = s.coste;
+        // 3. Para cada vecino v de u:        
+		for (const Arco & s : grafo.lista_adjaciencia[id_nodo_actual]) {
             
-            // Relajación: Si encontramos un camino más corto a 'v' a través de 'u'
-            if (Dist[u] != oo && Dist[u] + peso < Dist[v]) {
+            int nodo_vecino = s.idDestino;
+            int peso = s.coste;
+            num_expansiones++;
+            //  Si encontramos un camino más corto al nodo vecino desde el nodo actual
+            if (distancias[id_nodo_actual] != oo && distancias[id_nodo_actual] + peso < distancias[nodo_vecino]) {
+                 // Actualizar distancia
+                distancias[nodo_vecino] = distancias[id_nodo_actual] + peso;
+                // Almacenar el predecesor para reconstruir el camino
+                padres[nodo_vecino] = id_nodo_actual; 
                 
-                Dist[v] = Dist[u] + peso; // Actualizar distancia
-                Prev[v] = u; // **Almacenar el predecesor para reconstruir el camino**
-                
-                // Insertar 'v' con la nueva distancia en la cola
+                // Insertar el vecino con la nueva distancia en la cola
                 Nodo nuevo_nodo;
-                nuevo_nodo.id = v;
-                nuevo_nodo.g = Dist[v];
-                nuevo_nodo.id_padre = u;
+                nuevo_nodo.id = nodo_vecino;
+                nuevo_nodo.g = distancias[nodo_vecino];
+                nuevo_nodo.id_padre = id_nodo_actual;
                 cola_prioridad.push(nuevo_nodo);
             }
         }
-
-    /*   
-        1. Si v est´a en Q:
-            2. Si dist[u] + peso(u, v) < dist[v]:
-        dist[v] = dist[u] + peso(u, v)
-        prev[v] = u
-        Actualizar la posici´on de v en Q
-        5. Retornar dist[] y prev[] (distancias
-        m´ınimas y el camino m´as corto
-        desde s a todos los nodos)*/
-
-
-
 }
 // Si la cola se vacía y no llegamos al destino
-    if (Dist[v_destino] == oo) {
+    if (distancias[v_destino] == oo) {
         cout << "El destino no es alcanzable desde el origen." << endl;
     }
 }
 
 
-void Dijkstra::imprimir_camino(vector<int> Dist, vector<int> Prev, string output_path) {
+void Dijkstra::imprimir_camino(string output_path) {
     ofstream fichero(output_path, ios_base::app);
     if (!fichero.is_open())
     {
@@ -247,39 +246,39 @@ void Dijkstra::imprimir_camino(vector<int> Dist, vector<int> Prev, string output
     }
     
     // 1. Trazar el camino hacia atrás
-    vector<int> path;
+    vector<int> camino;
     int current = id_destino;
     
 
     
     while (current != -1) {
-        path.push_back(current);
-        current = Prev[current];
+        camino.push_back(current);
+        current = padres[current];
     }
     
     // El camino se construye al revés, lo invertimos para ir de origen a destino
-    reverse(path.begin(), path.end());
+    reverse(camino.begin(), camino.end());
 
     
-    for (size_t i = 0; i < path.size(); ++i) {
-        int u = path[i];
+    for (size_t i = 0; i < camino.size(); ++i) {
+        int vertice_actual = camino[i];
         
-        fichero << u;
+        fichero << vertice_actual;
 
-        if (i < path.size() - 1) {
-            int v = path[i+1];
+        if (i < camino.size() - 1) {
+            int vertice_siguiente = camino[i+1];
             
             // Buscar el peso de la arista (u, v)
-            int weight = -1;
-            for (const Arco& s : grafo.lista_adjaciencia[u]) {
-                if (s.idDestino == v) {
-                    weight = s.coste;
+            int coste = -1;
+            for (const Arco& s : grafo.lista_adjaciencia[vertice_actual]) {
+                if (s.idDestino == vertice_siguiente) {
+                    coste = s.coste;
                     break;
                 }
             }
             
             // Imprimir el coste de la arista y la flecha al siguiente nodo
-            fichero << " - (" << weight << ") - ";
+            fichero << " - (" << coste << ") - ";
         }
     }
     fichero << endl;

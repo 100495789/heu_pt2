@@ -1,0 +1,12 @@
+Búsqueda de Extremos para .NY
+Extremo Norte (ID): 191500
+Extremo Sur (ID): 79224
+Extremo Este (ID): 4362
+Extremo Oeste (ID): 58197
+
+Búsqueda de Extremos para .BYE
+Extremo Norte (ID): 40397
+Extremo Sur (ID): 217403
+Extremo Este (ID): 77424
+Extremo Oeste (ID): 285309
+

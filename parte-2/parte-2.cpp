@@ -1,7 +1,5 @@
 #include <iostream> // Para cout
-#include "grafo.hpp"
-#include "abierta.hpp"
-#include "cerrada.hpp"
+
 #include "algoritmo.hpp"
 
 #include <chrono>
@@ -45,12 +43,13 @@ int main(int argc, char *argv[]){
     dijkstra.dijkstra(vertice1, vertice2, nombre_mapa, fichero_salida);
     auto end_dijkstra = std::chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed_dijkstra = end_dijkstra - start_dijkstra;
-
+    cout << endl;
     cout << "Dijkstra desde el vertice " << vertice1 << " hasta el vertice " << vertice2 << "\n";
     cout << "# vertices: " << dijkstra.grafo.num_vertices << "\n";
     cout << "# arcos   : " << dijkstra.grafo.num_arcos << "\n";
     cout << "Solución óptima con coste " << dijkstra.coste_final << "\n";
-
+    cout << "# expansiones      : " << dijkstra.num_expansiones << " ( " << dijkstra.num_nodos_expandidos/elapsed_dijkstra.count() << " nodos/sec)" << "\n";
+    
     cout << "Tiempo de ejecución: " << elapsed_dijkstra.count() << " segundos" << endl;
 
     return 0;
